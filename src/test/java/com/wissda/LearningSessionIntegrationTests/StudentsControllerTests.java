@@ -4,25 +4,29 @@ import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.response.ValidatableResponse;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.*;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
+import org.testng.Assert;
+import org.testng.annotations.BeforeSuite;
+import org.testng.annotations.Test;
 
 import static org.hamcrest.Matchers.*;
 //import org.springframework.boot.test.context.SpringBootTest;
 
 //@SpringBootTest
 @Slf4j
-@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-class StudentsControllerTests {
+//@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
+@Test
+class StudentsControllerTests extends AbstractTestNGSpringContextTests {
 	private static String studentId;
 
-	@BeforeAll
-	static void setup() {
-		// Use system property 'service.url' if provided, else fall back to environment variable 'QA_URL', else default to QA port 8082
+	@BeforeSuite
+	void setup() {
         RestAssured.baseURI = System.getProperty("serviceUrl");
 	}
 
-	@Test
-	@Order(1)
+	@Test(priority = 1)
 	void testCreateStudent() {
 		StudentDTO studentDTO = StudentDTO.builder()
 				.name("Test Name")
@@ -52,11 +56,10 @@ class StudentsControllerTests {
 
 		studentId = response.extract().path("id");
 		log.info("studentId : " + studentId);
-		Assertions.assertNotNull(studentId, "Student ID should not be null after creation");
+		Assert.assertNotNull(studentId, "Student ID should not be null after creation");
 	}
 
-	@Test
-	@Order(2)
+	@Test(priority = 2)
 	void testGetStudent() {
 		StudentDTO studentDTO = StudentDTO.builder()
 				.studentId(studentId)
@@ -76,8 +79,7 @@ class StudentsControllerTests {
 				.body("email", equalTo("testEmail@gmail.com"));
 	}
 
-	@Test
-	@Order(3)
+	@Test(priority = 3)
 	void testDeleteStudent() {
 		StudentDTO studentDTO = StudentDTO.builder()
 				.studentId(studentId)
