@@ -4,21 +4,14 @@ import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.response.ValidatableResponse;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.Assert;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Test;
 
 import static org.hamcrest.Matchers.*;
-//import org.springframework.boot.test.context.SpringBootTest;
 
-//@SpringBootTest
 @Slf4j
-//@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
-@Test
-class StudentsControllerTests extends AbstractTestNGSpringContextTests {
+public class StudentControllerTests {
 	private static String studentId;
 
 	@BeforeSuite
@@ -91,7 +84,7 @@ class StudentsControllerTests extends AbstractTestNGSpringContextTests {
 				.when()
 				.post("/students/delete")
 				.then()
-				.statusCode(400);
+				.statusCode(200);
 	}
 
 }

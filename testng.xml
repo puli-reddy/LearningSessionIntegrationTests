@@ -2,7 +2,7 @@
 <suite name="ERP Admin Service API Integration Suite" verbose="1" parallel="false">
     <test name="API Integration Tests">
         <classes>
-            <class name="com.wissda.LearningSessionIntegrationTests.StudentsControllerTests"/>
+            <class name="com.wissda.LearningSessionIntegrationTests.StudentControllerTests"/>
         </classes>
     </test>
 </suite>
