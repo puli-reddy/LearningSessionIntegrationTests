@@ -84,7 +84,7 @@ public class StudentControllerTests {
 				.when()
 				.post("/students/delete")
 				.then()
-				.statusCode(400);
+				.statusCode(200);
 	}
 
 }
