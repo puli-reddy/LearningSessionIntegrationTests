@@ -70,4 +70,31 @@
 		</plugins>
 	</build>
 
+	<profiles>
+		<profile>
+			<id>beta</id>
+			<properties>
+				<spring.profiles.active>beta</spring.profiles.active>
+				<profileActive>beta</profileActive>
+				<active.profile>beta</active.profile>
+			</properties>
+		</profile>
+		<profile>
+			<id>gamma</id>
+			<properties>
+				<spring.profiles.active>gamma</spring.profiles.active>
+				<profileActive>gamma</profileActive>
+				<active.profile>gamma</active.profile>
+			</properties>
+		</profile>
+		<profile>
+			<id>local</id>
+			<properties>
+				<spring.profiles.active>local</spring.profiles.active>
+				<profileActive>local</profileActive>
+				<active.profile>local</active.profile>
+			</properties>
+		</profile>
+	</profiles>
+
 </project>

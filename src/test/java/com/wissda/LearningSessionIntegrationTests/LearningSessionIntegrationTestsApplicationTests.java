@@ -3,24 +3,22 @@ package com.wissda.LearningSessionIntegrationTests;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.response.ValidatableResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.*;
-import org.springframework.beans.factory.annotation.Value;
 
 import static org.hamcrest.Matchers.*;
 //import org.springframework.boot.test.context.SpringBootTest;
 
 //@SpringBootTest
+@Slf4j
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class LearningSessionIntegrationTestsApplicationTests {
-
-	@Value("spring.admin.domain")
-	private static String domain;
-
-	private String studentId;
+	private static String studentId;
 
 	@BeforeAll
-    static void setup() {
-		RestAssured.baseURI = domain;
+	static void setup() {
+		// Use system property 'service.url' if provided, else fall back to environment variable 'QA_URL', else default to QA port 8082
+        RestAssured.baseURI = System.getProperty("serviceUrl");
 	}
 
 	@Test
@@ -53,7 +51,45 @@ class LearningSessionIntegrationTestsApplicationTests {
 				.body("email", equalTo("testEmail@gmail.com"));
 
 		studentId = response.extract().path("id");
+		log.info("studentId : " + studentId);
 		Assertions.assertNotNull(studentId, "Student ID should not be null after creation");
+	}
+
+	@Test
+	@Order(2)
+	void testGetStudent() {
+		StudentDTO studentDTO = StudentDTO.builder()
+				.studentId(studentId)
+				.build();
+
+		log.info("studentId : " + studentId);
+
+		ValidatableResponse response = RestAssured.given()
+				.contentType(ContentType.JSON)
+				.body(studentDTO)
+				.when()
+				.post("/students/byId")
+				.then()
+				.statusCode(200)
+				.body("id", notNullValue())
+				.body("name", equalTo("Test Name"))
+				.body("email", equalTo("testEmail@gmail.com"));
+	}
+
+	@Test
+	@Order(3)
+	void testDeleteStudent() {
+		StudentDTO studentDTO = StudentDTO.builder()
+				.studentId(studentId)
+				.build();
+
+		ValidatableResponse response = RestAssured.given()
+				.contentType(ContentType.JSON)
+				.body(studentDTO)
+				.when()
+				.post("/students/delete")
+				.then()
+				.statusCode(200);
 	}
 
 }
