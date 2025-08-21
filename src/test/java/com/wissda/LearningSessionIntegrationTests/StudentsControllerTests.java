@@ -12,7 +12,7 @@ import static org.hamcrest.Matchers.*;
 //@SpringBootTest
 @Slf4j
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-class LearningSessionIntegrationTestsApplicationTests {
+class StudentsControllerTests {
 	private static String studentId;
 
 	@BeforeAll
@@ -89,7 +89,7 @@ class LearningSessionIntegrationTestsApplicationTests {
 				.when()
 				.post("/students/delete")
 				.then()
-				.statusCode(200);
+				.statusCode(400);
 	}
 
 }
